@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block page_heading %}订单中心{% endblock %}
+{% block page_subtitle %}查看你的购买记录和待交易商品。{% endblock %}
+{% block content %}
+<section class="panel orders-panel">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">{{ '全部订单' if g.user.role == 'admin' else '我的订单' }}</p>
+      <h2>
+        {% if g.user.role == 'admin' %}
+          管理员订单列表
+        {% else %}
+          {{ g.user.display_name }} 的订单
+        {% endif %}
+      </h2>
+    </div>
+    <p class="hint">
+      {% if g.user.role == 'admin' %}
+        管理员可以查看所有订单。
+      {% else %}
+        最近的订单会显示在这里。
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="order-list">
+    {% for order in orders %}
+      <a class="order-row" href="{{ url_for('order_detail', order_id=order.id) }}">
+        <span class="order-id">#{{ order.id }}</span>
+        <span>
+          <strong>{{ order.title }}</strong>
+          <small>买家 {{ order.buyer_name }}</small>
+        </span>
+        <span class="order-status">{{ order.status }}</span>
+      </a>
+    {% else %}
+      <p class="hint">暂无订单，可从商品详情页点击“创建订单”。</p>
+    {% endfor %}
+  </div>
+
+</section>
+{% endblock %}

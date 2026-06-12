@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block page_heading %}管理员后台{% endblock %}
+{% block content %}
+<section class="detail-layout">
+  <article class="panel">
+    <h2>用户</h2>
+    {% for user in users %}
+      <p>{{ user.id }} · {{ user.username }} · {{ user.email }} · {{ user.role }}</p>
+    {% endfor %}
+  </article>
+  <article class="panel">
+    <h2>商品</h2>
+    {% for item in items %}
+      <p>{{ item.id }} · {{ item.title }} · ¥{{ item.price }}</p>
+    {% endfor %}
+  </article>
+</section>
+{% endblock %}

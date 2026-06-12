@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block page_heading %}商品详情{% endblock %}
+{% block page_subtitle %}看清描述后再下单，建议在校内公共区域完成交接。{% endblock %}
+{% block content %}
+<section class="detail-layout">
+  <article class="panel">
+    <p class="eyebrow">卖家 {{ item.display_name }}</p>
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.description }}</p>
+    <strong class="price">¥{{ "%.2f"|format(item.price) }}</strong>
+    {% if g.user %}
+      <form method="post" action="{{ url_for('buy_item', item_id=item.id) }}">
+        <button type="submit">立即下单</button>
+      </form>
+    {% endif %}
+    {% if g.user and (g.user.id == item.owner_id or g.user.role == 'admin') %}
+      <form class="inline-danger" method="post" action="{{ url_for('delete_item', item_id=item.id) }}">
+        {% if mode == 'secure' %}
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        {% endif %}
+        <button class="danger-button" type="submit">删除商品</button>
+      </form>
+    {% endif %}
+  </article>
+
+  <aside class="panel">
+    <h2>评论区</h2>
+    {% if g.user %}
+      <form method="post" action="{{ url_for('add_comment', item_id=item.id) }}">
+        <textarea name="content" rows="3" placeholder="询问成色、配件、交接时间等" required></textarea>
+        <button type="submit">发表评论</button>
+      </form>
+    {% endif %}
+    <div class="comments">
+      {% for comment in comments %}
+        <div class="comment">
+          <div class="comment-header">
+            <strong>{{ comment.display_name }}</strong>
+            {% if g.user and (g.user.id == comment.user_id or g.user.role == 'admin') %}
+              <form method="post" action="{{ url_for('delete_comment', comment_id=comment.id) }}">
+                {% if mode == 'secure' %}
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                {% endif %}
+                <button class="comment-delete" type="submit">删除</button>
+              </form>
+            {% endif %}
+          </div>
+          <p>{{ comment.rendered_content }}</p>
+        </div>
+      {% else %}
+        <p class="hint">暂无评论。</p>
+      {% endfor %}
+    </div>
+  </aside>
+</section>
+{% endblock %}

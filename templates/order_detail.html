@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block page_heading %}订单详情{% endblock %}
+{% block page_subtitle %}确认商品和交易状态，线下交接前请保持沟通。{% endblock %}
+{% block content %}
+<article class="panel">
+  <p class="eyebrow">订单 #{{ order.id }}</p>
+  <h2>{{ order.title }}</h2>
+  <p>买家：{{ order.buyer_name }}</p>
+  <p>状态：{{ order.status }}</p>
+</article>
+{% endblock %}

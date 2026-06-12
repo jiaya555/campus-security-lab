@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}校园集市{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="mode-{{ mode }}">
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark">CM</span>
+      <span>校园集市</span>
+    </a>
+    <nav>
+        <a href="{{ url_for('index') }}">市场</a>
+      {% if g.user %}
+        <a href="{{ url_for('new_item') }}">发布</a>
+        <a href="{{ url_for('orders') }}">订单</a>
+        <a href="{{ url_for('profile') }}">个人中心</a>
+        {% if g.user.role == 'admin' %}<a href="{{ url_for('admin') }}">后台</a>{% endif %}
+        <a href="{{ url_for('logout') }}">退出</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">登录</a>
+        <a href="{{ url_for('register') }}">注册</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="mode-panel">
+      <div>
+        <p class="eyebrow">{% block page_kicker %}Campus Market{% endblock %}</p>
+        <h1>{% block page_heading %}校园集市{% endblock %}</h1>
+        <p class="hero-copy">{% block page_subtitle %}把闲置转给刚好需要的人，校内见面交易更安心。{% endblock %}</p>
+      </div>
+    </section>
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+  </main>
+  <div class="mode-float" aria-label="运行模式切换">
+    <a
+      class="mode-dot safe-dot {{ 'active' if mode == 'secure' else '' }}"
+      href="{{ request.path }}?mode=secure"
+      aria-label="切换到绿色模式"
+    ></a>
+    <a
+      class="mode-dot vulnerable-dot {{ 'active' if mode == 'vulnerable' else '' }}"
+      href="{{ request.path }}?mode=vulnerable"
+      aria-label="切换到红色模式"
+    ></a>
+  </div>
+</body>
+</html>

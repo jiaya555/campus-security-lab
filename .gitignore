@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+instance/
+node_modules/
+outputs/
+deliverables/
+test_files/
+scripts/
+校园二手交易平台攻防双视图靶场_姓名/
+*.zip
+.env
+*.db
+*.sqlite
+*.sqlite3
+package.json
+package-lock.json

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block page_heading %}个人中心{% endblock %}
+{% block page_subtitle %}管理联系方式、订单和自己发布的闲置商品。{% endblock %}
+{% block content %}
+<section class="detail-layout">
+  <form class="panel form-panel" method="post">
+    <h2>{{ g.user.display_name }}</h2>
+    <label>邮箱<input name="email" type="email" value="{{ g.user.email }}"></label>
+    {% if mode == 'secure' %}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    {% endif %}
+    <button type="submit">更新资料</button>
+  </form>
+
+  <section class="panel">
+    <h2>我的订单</h2>
+    {% for order in orders %}
+      <a class="row-link" href="{{ url_for('order_detail', order_id=order.id) }}">
+        #{{ order.id }} {{ order.title }} · {{ order.status }}
+      </a>
+    {% else %}
+      <p class="hint">暂无订单。</p>
+    {% endfor %}
+  </section>
+</section>
+
+<section class="panel">
+  <h2>我发布的商品</h2>
+  {% for item in my_items %}
+    <div class="row-actions">
+      <a class="row-link" href="{{ url_for('item_detail', item_id=item.id) }}">
+        #{{ item.id }} {{ item.title }} · ¥{{ "%.2f"|format(item.price) }}
+      </a>
+      <form method="post" action="{{ url_for('delete_item', item_id=item.id) }}">
+        {% if mode == 'secure' %}
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        {% endif %}
+        <button class="danger-button" type="submit">删除</button>
+      </form>
+    </div>
+  {% else %}
+    <p class="hint">暂无发布商品。</p>
+  {% endfor %}
+</section>
+{% endblock %}

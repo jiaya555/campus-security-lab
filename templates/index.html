@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block page_heading %}发现校内好物{% endblock %}
+{% block page_subtitle %}教材、数码、骑行装备和宿舍小物都在这里流转。{% endblock %}
+{% block content %}
+<section class="search-band">
+  <form class="search-form" method="get" action="{{ url_for('index') }}">
+    <input name="q" value="{{ q }}" placeholder="搜索商品、教材、数码配件">
+    <button type="submit">搜索</button>
+  </form>
+</section>
+
+<section class="grid">
+  {% for item in items %}
+    <article class="card">
+      <p class="eyebrow">卖家 {{ item.display_name }}</p>
+      <h2>{{ item.title }}</h2>
+      <p>{{ item.description }}</p>
+      <div class="card-footer">
+        <strong>¥{{ "%.2f"|format(item.price) }}</strong>
+        <a class="button ghost" href="{{ url_for('item_detail', item_id=item.id) }}">查看</a>
+      </div>
+    </article>
+  {% else %}
+    <article class="empty">没有匹配商品。</article>
+  {% endfor %}
+</section>
+{% endblock %}

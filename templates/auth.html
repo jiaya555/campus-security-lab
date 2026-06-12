@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block page_heading %}{{ '创建账号' if action == 'register' else '欢迎回来' }}{% endblock %}
+{% block page_subtitle %}登录后可以发布闲置、评论商品并管理订单。{% endblock %}
+{% block content %}
+<form class="panel form-panel" method="post">
+  <label>用户名<input name="username" required></label>
+  <label>密码<input name="password" type="password" required></label>
+  {% if action == 'register' %}
+    <label>邮箱<input name="email" type="email"></label>
+  {% endif %}
+  <button type="submit">{{ '注册' if action == 'register' else '登录' }}</button>
+</form>
+{% endblock %}

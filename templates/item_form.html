@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block page_heading %}发布商品{% endblock %}
+{% block page_subtitle %}写清成色、价格和交接方式，能更快找到合适买家。{% endblock %}
+{% block content %}
+<form class="panel form-panel" method="post" enctype="multipart/form-data">
+  <label>标题<input name="title" required></label>
+  <label>描述<textarea name="description" rows="5" required></textarea></label>
+  <label>价格<input name="price" type="number" step="0.01" min="0" required></label>
+  <label>商品图片<input name="image" type="file" accept="image/png,image/jpeg,image/gif,image/webp"></label>
+  <button type="submit">发布商品</button>
+</form>
+{% endblock %}
